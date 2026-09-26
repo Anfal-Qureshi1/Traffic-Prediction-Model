@@ -1,51 +1,105 @@
-# Traffic Flow Prediction System
+# Traffic Level Classification
 
-A Machine Learning-based system designed to analyze historical traffic patterns and predict future congestion levels. This project aims to transition traffic management from reactive responses to proactive planning by utilizing data-driven insights.
+A compact machine-learning learning project that uses historical vehicle-count data to classify traffic into **Low**, **Medium**, or **High** levels.
 
-## 📌 Introduction
+> **Project status:** Completed learning experiment. The model is implemented in a single Python script and uses the included CSV dataset.
 
-Traffic congestion in urban areas leads to significant delays, fuel waste, and increased pollution. The **Traffic Flow Prediction System** leverages intelligent algorithms to predict traffic volume and conditions based on time, date, and historical vehicle counts, enabling better route planning and city management.
+## What the project does
 
-## 🚀 Objectives
+The script:
 
-* **Predict Total Traffic Volume:** Estimate the number of vehicles on the road at specific times.
-* **Congestion Classification:** Predict traffic situations (e.g., heavy, light, congested) before they occur.
-* **Data-Driven Decisions:** Provide a foundation for intelligent transportation systems and improved urban mobility.
+1. Loads traffic data from `traffic_data.csv`.
+2. Removes missing values.
+3. Extracts the hour from the time column.
+4. Creates a peak-hour indicator.
+5. Encodes the day of the week.
+6. Calculates total vehicle count.
+7. Creates Low/Medium/High traffic labels from defined count thresholds.
+8. Builds a weighted-traffic feature.
+9. Splits the data into training and test sets.
+10. Trains a `RandomForestClassifier`.
+11. Reports balanced accuracy, a confusion matrix, and a classification report.
+12. Runs one example prediction and displays a traffic visualization.
 
-## 🛠️ Methodology
+## Model
 
-1. **Data Collection:** Utilizing traffic datasets (sourced from Kaggle).
-2. **Preprocessing:** Data cleaning, handling missing values, and feature engineering.
-3. **Model Training:** Training ML models using historical patterns.
-4. **Evaluation:** Testing performance using accuracy and error metrics.
+The current implementation uses:
 
-## 💻 Tech Stack
+```text
+RandomForestClassifier
+n_estimators = 1000
+class_weight = "balanced"
+random_state = 42
+```
 
-* **Language:** Python
-* **Libraries:** * `Pandas` & `NumPy` (Data Manipulation)
-* `Scikit-learn` (Machine Learning)
-* `Matplotlib` (Visualization)
+The train/test split uses 70% of the data for training and 30% for testing with stratification.
 
+## Features used
 
-* **Tools:** Jupyter Notebook / VS Code
+- Hour
+- Peak-hour indicator
+- Day of the week
+- Bike count
+- Car count
+- Bus count
+- Truck count
+- Weighted traffic
 
-## 📊 Dataset
+The weighted feature gives different relative weights to vehicle types before classification.
 
-The project utilizes the **Traffic Prediction Dataset** from Kaggle, which includes features such as:
+## Tech stack
 
-* Time & Date
-* Day of the week
-* Vehicle counts
-* Traffic situation labels
+- Python
+- pandas
+- NumPy
+- scikit-learn
+- Matplotlib
 
-## 🎯 Expected Outcomes
+## Repository contents
 
-* A trained machine learning model capable of accurate traffic flow prediction.
-* A working prototype for predicting congestion levels.
-* Improved decision-making support for traffic management authorities.
+```text
+Traffic-Prediction-Model/
+├── Traffic_Prediction_Model.py
+├── traffic_data.csv
+└── README.md
+```
 
----
+## Run locally
 
-### 👨‍💻 Project Details
+Install the required libraries:
 
-* **Author:** Anfal Qureshi (24PWBCS1069)
+```bash
+pip install pandas numpy scikit-learn matplotlib
+```
+
+Run the script from the repository directory:
+
+```bash
+python Traffic_Prediction_Model.py
+```
+
+The script prints the evaluation metrics in the terminal and opens the visualization using Matplotlib.
+
+## Evaluation note
+
+The traffic classes in this project are **created inside the script from total vehicle-count thresholds**:
+
+- Low: fewer than 30 total vehicles
+- Medium: 30–69 total vehicles
+- High: 70 or more total vehicles
+
+Because the target labels are derived from the same underlying vehicle counts used as model inputs, this should be viewed as a machine-learning practice project rather than evidence of a real-world congestion forecasting system. A stronger future version would use independently observed congestion labels and time-based validation.
+
+## Possible next steps
+
+- Compare multiple classifiers
+- Use independently labelled traffic conditions
+- Add cross-validation
+- Separate training and inference code
+- Save the trained model
+- Build a small prediction interface
+
+## Author
+
+**Anfal Qureshi**  
+Computer Science student exploring machine learning, data preparation, evaluation, and practical modelling workflows.
